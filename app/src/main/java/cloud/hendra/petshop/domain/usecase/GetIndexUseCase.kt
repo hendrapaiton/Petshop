@@ -1,0 +1,17 @@
+package cloud.hendra.petshop.domain.usecase
+
+import cloud.hendra.petshop.data.repository.IndexRepository
+import cloud.hendra.petshop.utils.Result
+
+class GetIndexUseCase(
+    private val indexRepository: IndexRepository
+) {
+    suspend operator fun invoke(): Result {
+        Result.Loading
+        return try {
+            Result.Success(indexRepository.getIndex()).index
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
+        } as Result
+    }
+}
