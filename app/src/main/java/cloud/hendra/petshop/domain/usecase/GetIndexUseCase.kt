@@ -9,9 +9,9 @@ class GetIndexUseCase(
     suspend operator fun invoke(): Result {
         Result.Loading
         return try {
-            Result.Success(indexRepository.getIndex()).index
+            Result.Success(indexRepository.getIndex())
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")
-        } as Result
+        }
     }
 }
