@@ -1,16 +1,14 @@
 package cloud.hendra.petshop.ui.component.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cloud.hendra.petshop.data.remote.dto.IndexDto
@@ -54,45 +51,18 @@ fun LoginTitle(index: IndexDto) {
                 letterSpacing = 5.sp
             )
             Spacer(modifier = Modifier.height(24.dp))
-            BasicTextField(
+            OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                decorationBox = { innerTextField ->
-                    Box(
-                        modifier = Modifier
-                            .background(Color.LightGray)
-                            .padding(horizontal = 8.dp, vertical = 16.dp)
-                    ) {
-                        if (username.isEmpty()) {
-                            Text(text = "Username", color = Color.Gray)
-                        }
-                        innerTextField()
-                    }
-                }
+                label = { Text("Username") },
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BasicTextField(
+            OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                visualTransformation = PasswordVisualTransformation(),
-                decorationBox = { innerTextField ->
-                    Box(
-                        modifier = Modifier
-                            .background(Color.LightGray)
-                            .padding(horizontal = 8.dp, vertical = 16.dp)
-                    ) {
-                        if (password.isEmpty()) {
-                            Text(text = "Password", color = Color.Gray)
-                        }
-                        innerTextField()
-                    }
-                }
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
