@@ -1,9 +1,10 @@
 package cloud.hendra.petshop.utils
 
-import cloud.hendra.petshop.data.remote.dto.IndexDto
-
-sealed interface Result {
-    data object Loading : Result
-    data class Success(val index: IndexDto) : Result
-    data class Error(val message: String) : Result
+sealed class Result<out T> {
+    data object Loading : Result<Nothing>()
+    data class Success<T>(val data: T) : Result<T>()
+    data class Error(
+        val exception: Throwable? = null,
+        val message: String? = null
+    ) : Result<Nothing>()
 }
