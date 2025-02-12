@@ -1,6 +1,7 @@
 package cloud.hendra.petshop
 
 import android.app.Application
+import cloud.hendra.petshop.data.module.authModule
 import cloud.hendra.petshop.data.module.networkModule
 import cloud.hendra.petshop.data.module.repositoryModule
 import cloud.hendra.petshop.data.module.viewModelModule
@@ -16,7 +17,8 @@ class MyApplication : Application() {
                 listOf(
                     networkModule,
                     repositoryModule,
-                    viewModelModule
+                    viewModelModule,
+                    authModule,
                 )
             )
         }

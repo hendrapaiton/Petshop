@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,11 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cloud.hendra.petshop.data.remote.dto.IndexDto
+import cloud.hendra.petshop.ui.viewmodel.AuthViewModel
+import cloud.hendra.petshop.utils.AuthState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginTitle(index: IndexDto) {
+fun LoginTitle(index: IndexDto, viewModel: AuthViewModel = koinViewModel()) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val state by viewModel.uiState
 
     Surface {
         Column(
@@ -65,18 +70,27 @@ fun LoginTitle(index: IndexDto) {
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
-                Text(
-                    text = "Masuk".uppercase(),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                )
+            when (val authState = state) {
+                is AuthState.Error -> Text(authState.message)
+                is AuthState.Idle -> {
+                    Button(
+                        onClick = { viewModel.login(username, password) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Masuk".uppercase(),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+
+                is AuthState.Loading -> CircularProgressIndicator()
+                is AuthState.Success -> Text(authState.user.access)
             }
+
         }
     }
 }
