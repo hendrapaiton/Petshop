@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cloud.hendra.petshop.data.remote.dto.IndexDto
 import cloud.hendra.petshop.domain.usecase.GetIndexUseCase
 import cloud.hendra.petshop.utils.Result
 import kotlinx.coroutines.launch
@@ -11,8 +12,8 @@ import kotlinx.coroutines.launch
 class IndexViewModel(
     private val getIndexUseCase: GetIndexUseCase
 ) : ViewModel() {
-    private val _uiState = mutableStateOf<Result>(Result.Loading)
-    val uiState: State<Result> = _uiState
+    private val _uiState = mutableStateOf<Result<IndexDto>>(Result.Loading)
+    val uiState: State<Result<IndexDto>> = _uiState
 
     init {
         loadIndex()
@@ -24,7 +25,7 @@ class IndexViewModel(
             try {
                 val result = getIndexUseCase()
                 _uiState.value = when (result) {
-                    is Result.Success -> Result.Success(result.index)
+                    is Result.Success -> Result.Success(result.data)
                     is Result.Error -> Result.Error(result.message)
                     else -> Result.Error("Unknown error")
                 }

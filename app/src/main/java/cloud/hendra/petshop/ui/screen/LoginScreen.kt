@@ -12,7 +12,7 @@ fun LoginScreen(viewModel: IndexViewModel = koinViewModel()) {
 
     when (val state = uiState) {
         is Result.Loading -> LoadingScreen()
-        is Result.Success -> LoginTitle(state.index)
-        is Result.Error -> ErrorScreen(state.message)
+        is Result.Success -> LoginTitle(state.data)
+        is Result.Error -> ErrorScreen(state.message.toString())
     }
 }

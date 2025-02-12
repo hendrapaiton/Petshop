@@ -25,8 +25,8 @@ fun MainScreen(viewModel: IndexViewModel = koinViewModel()) {
     ) {
         when (val state = uiState) {
             is Result.Loading -> LoadingView()
-            is Result.Success -> DataView(state.index)
-            is Result.Error -> ErrorView(state.message)
+            is Result.Success -> DataView(state.data)
+            is Result.Error -> ErrorView(state.message.toString())
         }
     }
 }
