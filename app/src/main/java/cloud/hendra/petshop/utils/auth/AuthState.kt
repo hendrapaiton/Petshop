@@ -1,4 +1,4 @@
-package cloud.hendra.petshop.utils
+package cloud.hendra.petshop.utils.auth
 
 import cloud.hendra.petshop.data.remote.dto.LoginResponse
 

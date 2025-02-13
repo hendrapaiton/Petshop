@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cloud.hendra.petshop.data.remote.dto.IndexDto
 import cloud.hendra.petshop.ui.viewmodel.AuthViewModel
-import cloud.hendra.petshop.utils.AuthState
+import cloud.hendra.petshop.utils.auth.AuthState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

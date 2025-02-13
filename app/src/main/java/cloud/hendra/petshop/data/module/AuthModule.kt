@@ -13,5 +13,8 @@ val authModule = module {
     single<AuthService> { get<Retrofit>().create(AuthService::class.java) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
     single { AuthUseCase(get()) }
-    viewModel { AuthViewModel(get()) }
+    viewModel { AuthViewModel(
+        authUseCase = get(),
+        tokenManager = get()
+    ) }
 }

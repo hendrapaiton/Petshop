@@ -73,4 +73,7 @@ dependencies {
 
     // Image Loading
     implementation(libs.coil.compose)
+
+    // Security
+    implementation(libs.androidx.security.crypto)
 }

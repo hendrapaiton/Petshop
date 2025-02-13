@@ -4,6 +4,7 @@ import android.app.Application
 import cloud.hendra.petshop.data.module.authModule
 import cloud.hendra.petshop.data.module.networkModule
 import cloud.hendra.petshop.data.module.repositoryModule
+import cloud.hendra.petshop.data.module.securityModule
 import cloud.hendra.petshop.data.module.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -19,6 +20,7 @@ class MyApplication : Application() {
                     repositoryModule,
                     viewModelModule,
                     authModule,
+                    securityModule,
                 )
             )
         }
