@@ -13,7 +13,7 @@ fun NavGraph() {
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen()
+            LoginScreen(navController)
         }
         composable("main") {
             MainScreen()

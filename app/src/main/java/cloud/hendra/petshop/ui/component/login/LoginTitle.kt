@@ -1,5 +1,6 @@
 package cloud.hendra.petshop.ui.component.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,13 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import cloud.hendra.petshop.data.remote.dto.IndexDto
 import cloud.hendra.petshop.ui.viewmodel.AuthViewModel
 import cloud.hendra.petshop.utils.auth.AuthState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginTitle(index: IndexDto, viewModel: AuthViewModel = koinViewModel()) {
+fun LoginTitle(navController: NavHostController, index: IndexDto, viewModel: AuthViewModel = koinViewModel()) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val state by viewModel.uiState
@@ -88,7 +90,7 @@ fun LoginTitle(index: IndexDto, viewModel: AuthViewModel = koinViewModel()) {
                 }
 
                 is AuthState.Loading -> CircularProgressIndicator()
-                is AuthState.Success -> Text(authState.user.access)
+                is AuthState.Success -> navController.to("main")
             }
 
         }

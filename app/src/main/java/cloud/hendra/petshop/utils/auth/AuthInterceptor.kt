@@ -7,29 +7,34 @@ import okhttp3.Response
 class AuthInterceptor(
     private val tokenManager: TokenManager,
     private val excludedPaths: Set<String> = setOf(
-        "api/v1/token/",
-        "api/v1/token/refresh/"
+        "/api/v1/",
+        "/api/v1/token/",
+        "/api/v1/token/refresh/"
     )
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        if (shouldAddToken(request)) {
-            val token = tokenManager.getToken()
-            if (token != null) {
-                val newRequest = request.newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
-                    .build()
-                return chain.proceed(newRequest)
-            }
+        val pathSegments = request.url.pathSegments
+        val requestPath = "/${pathSegments.joinToString("/")}"
+        return if (shouldAddToken(requestPath)) {
+            addTokenToRequest(chain, request)
+        } else {
+            chain.proceed(request)
         }
-        return chain.proceed(request)
     }
 
-    private fun shouldAddToken(request: Request): Boolean {
-        val path = request.url.encodedPath
+    private fun shouldAddToken(request: String): Boolean {
         return excludedPaths.none { excluded ->
-            path.startsWith(excluded) || request.url.host.contains(excluded)
+            request.startsWith(excluded)
         }
     }
 
+    private fun addTokenToRequest(chain: Interceptor.Chain, originalRequest: Request): Response {
+        return tokenManager.getToken()?.let { token ->
+            val newRequest = originalRequest.newBuilder()
+                .header("Authorization", "Bearer $token")
+                .build()
+            chain.proceed(newRequest)
+        } ?: chain.proceed(originalRequest)
+    }
 }
