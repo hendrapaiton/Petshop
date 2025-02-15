@@ -1,6 +1,6 @@
 package cloud.hendra.petshop.data.module
 
-import cloud.hendra.petshop.data.remote.dto.AuthService
+import cloud.hendra.petshop.data.remote.AuthService
 import cloud.hendra.petshop.data.repository.AuthRepository
 import cloud.hendra.petshop.data.repository.AuthRepositoryImpl
 import cloud.hendra.petshop.domain.usecase.AuthUseCase

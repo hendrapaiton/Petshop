@@ -1,7 +1,7 @@
 package cloud.hendra.petshop.data.repository
 
 import android.util.Log
-import cloud.hendra.petshop.data.remote.dto.AuthService
+import cloud.hendra.petshop.data.remote.AuthService
 import cloud.hendra.petshop.data.remote.dto.LoginRequest
 import cloud.hendra.petshop.data.remote.dto.LoginResponse
 import cloud.hendra.petshop.utils.Result
