@@ -9,24 +9,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cloud.hendra.petshop.data.remote.dto.IndexDto
-import cloud.hendra.petshop.ui.viewmodel.IndexViewModel
-import cloud.hendra.petshop.utils.Result
+import cloud.hendra.petshop.ui.viewmodel.ProtectedViewModel
+import cloud.hendra.petshop.utils.state.ProtectedState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreen(viewModel: IndexViewModel = koinViewModel()) {
+fun MainScreen(viewModel: ProtectedViewModel = koinViewModel()) {
     val uiState by viewModel.uiState
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         when (val state = uiState) {
-            is Result.Loading -> LoadingView()
-            is Result.Success -> DataView(state.data)
-            is Result.Error -> ErrorView(state.message.toString())
+            is ProtectedState.Idle -> Unit
+            is ProtectedState.Loading -> LoadingView()
+            is ProtectedState.Success -> DataView(state.data.detail)
+            is ProtectedState.Error -> ErrorView(state.message)
+            is ProtectedState.Unauthorized -> ErrorView("Unauthorized")
         }
     }
 }
@@ -37,8 +38,8 @@ fun ErrorView(message: String) {
 }
 
 @Composable
-fun DataView(index: IndexDto) {
-    Text(text = index.name)
+fun DataView(detail: String) {
+    Text(text = detail)
 }
 
 @Composable

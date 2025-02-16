@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import cloud.hendra.petshop.domain.usecase.AuthUseCase
 import cloud.hendra.petshop.utils.auth.AuthState
 import cloud.hendra.petshop.utils.auth.AuthState.*
-import cloud.hendra.petshop.utils.Result
+import cloud.hendra.petshop.utils.state.Result
 import cloud.hendra.petshop.utils.auth.TokenManager
 import kotlinx.coroutines.launch
 

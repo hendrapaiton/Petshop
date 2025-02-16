@@ -4,7 +4,7 @@ import android.util.Log
 import cloud.hendra.petshop.data.remote.AuthService
 import cloud.hendra.petshop.data.remote.dto.LoginRequest
 import cloud.hendra.petshop.data.remote.dto.LoginResponse
-import cloud.hendra.petshop.utils.Result
+import cloud.hendra.petshop.utils.state.Result
 
 class AuthRepositoryImpl(
     private val authService: AuthService

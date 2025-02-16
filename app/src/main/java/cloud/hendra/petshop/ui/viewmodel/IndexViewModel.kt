@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cloud.hendra.petshop.data.remote.dto.IndexDto
 import cloud.hendra.petshop.domain.usecase.GetIndexUseCase
-import cloud.hendra.petshop.utils.Result
+import cloud.hendra.petshop.utils.state.Result
 import kotlinx.coroutines.launch
 
 class IndexViewModel(

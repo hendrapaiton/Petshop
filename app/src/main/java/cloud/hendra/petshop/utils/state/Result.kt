@@ -1,4 +1,4 @@
-package cloud.hendra.petshop.utils
+package cloud.hendra.petshop.utils.state
 
 sealed class Result<out T> {
     data object Loading : Result<Nothing>()
