@@ -11,7 +11,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: IndexViewModel = koinViewModel()) {
     val uiState by viewModel.uiState
-    Log.d("LoginTitle", "state: $uiState")
 
     when (val state = uiState) {
         is Result.Loading -> LoadingScreen()

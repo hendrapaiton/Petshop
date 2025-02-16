@@ -19,6 +19,7 @@ class ProtectedViewModel(
 
     init {
         checkTokenValidity()
+        loadProtectedData()
     }
 
     private fun checkTokenValidity() {
@@ -34,7 +35,7 @@ class ProtectedViewModel(
                 val data = protectedRepository.getProtectedData()
                 _uiState.value = ProtectedState.Success(data)
             } catch (e: Exception) {
-
+                handleError(e)
             }
         }
     }

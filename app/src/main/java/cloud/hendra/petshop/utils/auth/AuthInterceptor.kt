@@ -25,7 +25,7 @@ class AuthInterceptor(
 
     private fun shouldAddToken(request: String): Boolean {
         return excludedPaths.none { excluded ->
-            request.startsWith(excluded)
+            request == excluded
         }
     }
 
