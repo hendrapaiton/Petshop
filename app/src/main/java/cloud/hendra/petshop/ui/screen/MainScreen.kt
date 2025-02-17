@@ -3,15 +3,15 @@ package cloud.hendra.petshop.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import cloud.hendra.petshop.ui.viewmodel.ProtectedViewModel
-import cloud.hendra.petshop.utils.auth.SecureTokenManager
+import cloud.hendra.petshop.ui.viewmodel.RefreshViewModel
 import cloud.hendra.petshop.utils.state.ProtectedState
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,10 +40,20 @@ fun ErrorView(message: String) {
 }
 
 @Composable
-fun DataView(detail: String) {
-    val refreshToken = SecureTokenManager(LocalContext.current).getRefreshToken()
+fun DataView(detail: String, viewModel: RefreshViewModel = koinViewModel()) {
+    val uiState by viewModel.uiState
+
     Text(text = detail)
-    Text(text = refreshToken ?: "No refresh token")
+    Button(onClick = {
+        viewModel.getAccessToken()
+    }) {
+        when (val state = uiState) {
+            is cloud.hendra.petshop.utils.state.Result.Loading -> CircularProgressIndicator()
+            is cloud.hendra.petshop.utils.state.Result.Success -> Text(text = state.data.token)
+            is cloud.hendra.petshop.utils.state.Result.Error -> Text(text = state.message.toString())
+        }
+        Text(text = "Refresh Token")
+    }
 }
 
 @Composable

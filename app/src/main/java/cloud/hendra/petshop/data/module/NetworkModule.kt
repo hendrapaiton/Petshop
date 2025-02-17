@@ -1,6 +1,8 @@
 package cloud.hendra.petshop.data.module
 
 import cloud.hendra.petshop.data.remote.IndexService
+import cloud.hendra.petshop.data.remote.ProtectedService
+import cloud.hendra.petshop.data.remote.RefreshService
 import cloud.hendra.petshop.utils.Constant.Companion.BASE_URL
 import cloud.hendra.petshop.utils.auth.AuthInterceptor
 import cloud.hendra.petshop.utils.auth.ServerCookieJar
@@ -40,4 +42,6 @@ val networkModule = module {
     }
 
     single { get<Retrofit>().create(IndexService::class.java) }
+    single<ProtectedService> { get<Retrofit>().create(ProtectedService::class.java) }
+    single<RefreshService> { get<Retrofit>().create(RefreshService::class.java) }
 }
