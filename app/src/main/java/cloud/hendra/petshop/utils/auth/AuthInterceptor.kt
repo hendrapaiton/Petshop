@@ -30,7 +30,7 @@ class AuthInterceptor(
     }
 
     private fun addTokenToRequest(chain: Interceptor.Chain, originalRequest: Request): Response {
-        return tokenManager.getToken()?.let { token ->
+        return tokenManager.getAccessToken()?.let { token ->
             val newRequest = originalRequest.newBuilder()
                 .header("Authorization", "Bearer $token")
                 .build()

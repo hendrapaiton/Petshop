@@ -17,13 +17,20 @@ class SecureTokenManager(private val context: Context) : TokenManager {
         )
     }
 
-    override fun getToken(): String? = prefs.getString("ACCESS_TOKEN", null)
+    override fun getAccessToken(): String? = prefs.getString("ACCESS_TOKEN", null)
 
-    override fun saveToken(login: LoginResponse) {
+    override fun saveAccessToken(login: LoginResponse) {
         prefs.edit().putString("ACCESS_TOKEN", login.access).apply()
     }
 
-    override fun clearToken() {
+    override fun clearAccessToken() {
         prefs.edit().remove("ACCESS_TOKEN").apply()
     }
+
+    override fun getRefreshToken(): String? = prefs.getString("REFRESH_TOKEN", null)
+
+    override fun saveRefreshToken(refresh: String) {
+        prefs.edit().putString("REFRESH_TOKEN", refresh).apply()
+    }
+
 }

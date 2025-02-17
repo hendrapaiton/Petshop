@@ -24,7 +24,7 @@ class AuthViewModel(
             when (val result = authUseCase(username, password)) {
                 is Result.Success -> {
                     _uiState.value = Success(result.data)
-                    tokenManager.saveToken(result.data)
+                    tokenManager.saveAccessToken(result.data)
                 }
                 is Result.Error -> {
                     _uiState.value = Error(result.message as String)

@@ -23,7 +23,7 @@ class ProtectedViewModel(
     }
 
     private fun checkTokenValidity() {
-        if (tokenManager.getToken().isNullOrEmpty()) {
+        if (tokenManager.getAccessToken().isNullOrEmpty()) {
             _uiState.value = ProtectedState.Unauthorized
         }
     }
@@ -44,7 +44,7 @@ class ProtectedViewModel(
         when (e) {
             is HttpException -> {
                 if (e.response.code == 401) {
-                    tokenManager.clearToken()
+                    tokenManager.clearAccessToken()
                     _uiState.value = ProtectedState.Unauthorized
                 } else {
                     _uiState.value = ProtectedState.Error("Server error: ${e.response.code}")
