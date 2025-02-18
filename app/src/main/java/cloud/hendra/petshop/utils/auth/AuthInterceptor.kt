@@ -1,6 +1,5 @@
 package cloud.hendra.petshop.utils.auth
 
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

@@ -5,13 +5,12 @@ import androidx.navigation.NavHostController
 import cloud.hendra.petshop.ui.component.component.ErrorScreen
 import cloud.hendra.petshop.ui.component.component.LoadingScreen
 import cloud.hendra.petshop.ui.component.login.LoginTitle
-import cloud.hendra.petshop.ui.viewmodel.GuardViewModel
 import cloud.hendra.petshop.ui.viewmodel.IndexViewModel
 import cloud.hendra.petshop.utils.state.Result
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(
+fun LoginPage(
     navController: NavHostController,
     viewModel: IndexViewModel = koinViewModel()
 ) {
