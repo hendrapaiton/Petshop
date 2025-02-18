@@ -27,8 +27,7 @@ class AuthInterceptor(
     }
 
     private fun shouldAddRefresh(request: String): Boolean {
-        Log.d("AuthInterceptor", "shouldAddRefresh: ${request == "/api/v1/token/refresh"}")
-        return request == "/api/v1/token/refresh"
+        return request == "/api/v1/token/refresh/"
     }
 
     private fun addRefreshToken(chain: Interceptor.Chain, originalRequest: Request): Response {

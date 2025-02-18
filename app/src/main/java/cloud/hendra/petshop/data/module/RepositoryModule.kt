@@ -1,5 +1,7 @@
 package cloud.hendra.petshop.data.module
 
+import cloud.hendra.petshop.data.repository.GuardRepository
+import cloud.hendra.petshop.data.repository.GuardRepositoryImpl
 import cloud.hendra.petshop.data.repository.IndexRepository
 import cloud.hendra.petshop.data.repository.IndexRepositoryImpl
 import cloud.hendra.petshop.data.repository.ProtectedRepository
@@ -16,4 +18,5 @@ val repositoryModule = module {
     single<RefreshRepository> { RefreshRepositoryImpl(get()) }
     single { RefreshUseCase(get()) }
     single<ProtectedRepository> { ProtectedRepositoryImpl(get()) }
+    single<GuardRepository> { GuardRepositoryImpl(get(), get(), get()) }
 }
