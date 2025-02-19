@@ -4,6 +4,7 @@ import cloud.hendra.petshop.ui.viewmodel.GuardViewModel
 import cloud.hendra.petshop.ui.viewmodel.IndexViewModel
 import cloud.hendra.petshop.ui.viewmodel.ProtectedViewModel
 import cloud.hendra.petshop.ui.viewmodel.RefreshViewModel
+import cloud.hendra.petshop.ui.viewmodel.SaldoViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -12,4 +13,5 @@ val viewModelModule = module {
     viewModel { ProtectedViewModel(get(), get()) }
     viewModel { RefreshViewModel(get()) }
     viewModel { GuardViewModel(get()) }
+    viewModel { SaldoViewModel(get()) }
 }

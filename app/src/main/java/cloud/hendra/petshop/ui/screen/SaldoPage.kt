@@ -8,9 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -22,7 +23,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,13 +34,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import cloud.hendra.petshop.ui.viewmodel.ProtectedViewModel
-import cloud.hendra.petshop.ui.viewmodel.RefreshViewModel
-import cloud.hendra.petshop.utils.state.ProtectedState
+import cloud.hendra.petshop.ui.viewmodel.SaldoViewModel
+import cloud.hendra.petshop.utils.state.Result.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SaldoPage(navController: NavController, viewModel: ProtectedViewModel = koinViewModel()) {
+fun SaldoPage(navController: NavController, viewModel: SaldoViewModel = koinViewModel()) {
+    val uiState = viewModel.uiState.collectAsState()
+    val shift = remember { mutableStateOf("P") }
+    val nominal = remember { mutableStateOf("") }
+    val isFocused = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -59,12 +63,10 @@ fun SaldoPage(navController: NavController, viewModel: ProtectedViewModel = koin
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
-            val selectedOption = remember { mutableStateOf("Pagi") }
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = selectedOption.value == "Pagi",
-                    onClick = { selectedOption.value = "Pagi" },
+                    selected = shift.value == "P",
+                    onClick = { shift.value = "P" },
                     colors = RadioButtonDefaults.colors(selectedColor = Color.Blue)
                 )
                 Text(text = "Pagi")
@@ -72,20 +74,17 @@ fun SaldoPage(navController: NavController, viewModel: ProtectedViewModel = koin
             Spacer(modifier = Modifier.width(32.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = selectedOption.value == "Sore",
-                    onClick = { selectedOption.value = "Sore" },
+                    selected = shift.value == "S",
+                    onClick = { shift.value = "S" },
                     colors = RadioButtonDefaults.colors(selectedColor = Color.Blue)
                 )
                 Text(text = "Sore")
             }
         }
 
-        var text = remember { mutableStateOf("") }
-        var isFocused = remember { mutableStateOf(false) }
-
         BasicTextField(
-            value = text.value,
-            onValueChange = { text.value = it },
+            value = nominal.value,
+            onValueChange = { nominal.value = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
@@ -106,7 +105,7 @@ fun SaldoPage(navController: NavController, viewModel: ProtectedViewModel = koin
                                 shape = RoundedCornerShape(8.dp)
                             )
                     ) {
-                        if (text.value.isEmpty()) {
+                        if (nominal.value.isEmpty()) {
                             Text(
                                 text = "Saldo awal...",
                                 fontSize = 16.sp,
@@ -122,55 +121,72 @@ fun SaldoPage(navController: NavController, viewModel: ProtectedViewModel = koin
             )
         )
         Button(
-            onClick = { navController.navigate("sales") },
+            onClick = {
+                viewModel.openStore(shift = shift.value, awal = nominal.value.toInt())
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
             Text("Buka Toko")
         }
-    }
+        Spacer(modifier = Modifier.height(16.dp))
+        when (val state = uiState.value) {
+            is Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color.Blue,
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Memproses...",
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
 
-//    val uiState by viewModel.uiState
-//
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        when (val state = uiState) {
-//            is ProtectedState.Idle -> Unit
-//            is ProtectedState.Loading -> LoadingView()
-//            is ProtectedState.Success -> DataView(state.data.detail)
-//            is ProtectedState.Error -> ErrorView(state.message)
-//            is ProtectedState.Unauthorized -> ErrorView("Unauthorized")
-//        }
-//    }
-//}
-//
-//@Composable
-//fun ErrorView(message: String) {
-//    Text(text = message)
-//}
-//
-//@Composable
-//fun DataView(detail: String, viewModel: RefreshViewModel = koinViewModel()) {
-//    val uiState by viewModel.uiState
-//
-//    Text(text = detail)
-//    Button(onClick = {
-//        viewModel.getAccessToken()
-//    }) {
-//        when (val state = uiState) {
-//            is cloud.hendra.petshop.utils.state.Result.Loading -> CircularProgressIndicator()
-//            is cloud.hendra.petshop.utils.state.Result.Success -> Text(text = state.data.token)
-//            is cloud.hendra.petshop.utils.state.Result.Error -> Text(text = state.message.toString())
-//        }
-//        Text(text = "Refresh Token")
-//    }
-//}
-//
-//@Composable
-//fun LoadingView() {
-//    CircularProgressIndicator()
+            is Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .background(Color(0xFFFFEBEE), RoundedCornerShape(8.dp))
+                        .border(1.dp, Color(0xFFFFCDD2), RoundedCornerShape(8.dp))
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = state.message ?: "Terjadi kesalahan",
+                            color = Color.Red,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
+
+            is Success -> {
+                navController.navigate("sales")
+            }
+
+            else -> Unit
+        }
+    }
 }

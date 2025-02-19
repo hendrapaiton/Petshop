@@ -89,7 +89,7 @@ fun LoginTitle(navController: NavHostController, index: IndexDto, viewModel: Aut
                 }
 
                 is AuthState.Loading -> CircularProgressIndicator()
-                is AuthState.Success -> navController.navigate("main")
+                is AuthState.Success -> navController.navigate("saldo")
             }
 
         }

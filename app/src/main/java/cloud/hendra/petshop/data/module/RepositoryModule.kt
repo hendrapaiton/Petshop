@@ -8,7 +8,10 @@ import cloud.hendra.petshop.data.repository.ProtectedRepository
 import cloud.hendra.petshop.data.repository.ProtectedRepositoryImpl
 import cloud.hendra.petshop.data.repository.RefreshRepository
 import cloud.hendra.petshop.data.repository.RefreshRepositoryImpl
+import cloud.hendra.petshop.data.repository.SaldoRepository
+import cloud.hendra.petshop.data.repository.SaldoRepositoryImpl
 import cloud.hendra.petshop.domain.usecase.GetIndexUseCase
+import cloud.hendra.petshop.domain.usecase.GetSaldoUseCase
 import cloud.hendra.petshop.domain.usecase.RefreshUseCase
 import org.koin.dsl.module
 
@@ -19,4 +22,6 @@ val repositoryModule = module {
     single { RefreshUseCase(get()) }
     single<ProtectedRepository> { ProtectedRepositoryImpl(get()) }
     single<GuardRepository> { GuardRepositoryImpl(get(), get(), get()) }
+    single<SaldoRepository> { SaldoRepositoryImpl(get()) }
+    single { GetSaldoUseCase(get()) }
 }
