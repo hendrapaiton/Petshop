@@ -68,18 +68,3 @@ class Database:
         except Exception:
             pass
         return False
-
-
-def get_db():
-    """Get database instance"""
-    return Database.get_database()
-
-
-def get_collection(name):
-    """Get collection by name"""
-    return Database.get_collection(name)
-
-
-def check_connection():
-    """Check database connection"""
-    return Database.is_connected()

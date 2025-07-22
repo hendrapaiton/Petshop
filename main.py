@@ -1,5 +1,5 @@
 import logging
-from config.setting import Database, check_connection
+from src.config.setting import Database
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,7 +11,7 @@ def main():
     db = Database
     db.connect()
 
-    if check_connection():
+    if db.is_connected():
         logger.info("✅ Database connection test successful!")
     else:
         logger.error("❌ Database connection test failed.")
