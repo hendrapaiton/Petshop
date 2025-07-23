@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
 import logging
 
@@ -18,23 +18,24 @@ DATABASE_CONFIG = {
 
 
 class Database:
-    """Simple MongoDB connection manager"""
+    """Async MongoDB connection manager using Motor"""
 
     _client = None
     _database = None
 
     @classmethod
-    def connect(cls):
-        """Connect to MongoDB"""
+    async def connect(cls):
+        """Connect to MongoDB asynchronously"""
         try:
             if DATABASE_CONFIG["username"] and DATABASE_CONFIG["password"]:
                 connection_string = f"mongodb://{DATABASE_CONFIG['username']}:{DATABASE_CONFIG['password']}@{DATABASE_CONFIG['host']}:{DATABASE_CONFIG['port']}/{DATABASE_CONFIG['database']}"
             else:
                 connection_string = f"mongodb://{DATABASE_CONFIG['host']}:{DATABASE_CONFIG['port']}"
 
-            cls._client = MongoClient(
+            cls._client = AsyncIOMotorClient(
                 connection_string, serverSelectionTimeoutMS=5000)
-            cls._client.admin.command('ping')
+
+            await cls._client.admin.command('ping')
             cls._database = cls._client[DATABASE_CONFIG["database"]]
 
             logger.info(
@@ -44,27 +45,39 @@ class Database:
         except ConnectionFailure as e:
             logger.error(f"❌ MongoDB connection failed: {e}")
             return False
+        except Exception as e:
+            logger.error(f"❌ Unexpected error during connection: {e}")
+            return False
 
     @classmethod
-    def get_database(cls):
+    async def get_database(cls):
         """Get database instance"""
         if cls._database is None:
-            cls.connect()
+            await cls.connect()
         return cls._database
 
     @classmethod
-    def get_collection(cls, collection_name):
+    async def get_collection(cls, collection_name):
         """Get collection"""
-        db = cls.get_database()
+        db = await cls.get_database()
         return db[collection_name] if db is not None else None
 
     @classmethod
-    def is_connected(cls):
-        """Check if connected"""
+    async def is_connected(cls):
+        """Check if connected asynchronously"""
         try:
             if cls._client is not None:
-                cls._client.admin.command('ping')
+                await cls._client.admin.command('ping')
                 return True
         except Exception:
             pass
         return False
+
+    @classmethod
+    async def close_connection(cls):
+        """Close database connection"""
+        if cls._client is not None:
+            cls._client.close()
+            cls._client = None
+            cls._database = None
+            logger.info("🔌 MongoDB connection closed")

@@ -1,6 +1,6 @@
 flet==0.70.0.dev5089
+motor
 pydantic
-pymongo
 pytest
 pytest-asyncio
 python-dotenv
